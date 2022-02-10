@@ -6,7 +6,7 @@ namespace RPGCore.Demo.Inventory.Nodes;
 
 public sealed class IterateNode : NodeTemplate<IterateNode>
 {
-	public InputSocket Repetitions;
+	public Input Repetitions;
 	public string SubgraphId;
 
 	public override Instance Create()

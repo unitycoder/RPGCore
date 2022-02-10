@@ -4,8 +4,8 @@ namespace RPGCore.Demo.BoardGame;
 
 public class GetTileBuildingNode : NodeTemplate<GetTileBuildingNode>
 {
-	public InputSocket Tile;
-	public OutputSocket Building;
+	public Input Tile;
+	public Output Building;
 
 	public override Instance Create()
 	{

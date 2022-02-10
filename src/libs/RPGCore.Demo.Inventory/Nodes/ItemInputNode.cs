@@ -4,7 +4,7 @@ namespace RPGCore.Demo.Inventory.Nodes;
 
 public sealed class ItemInputNode : NodeTemplate<ItemInputNode>
 {
-	public OutputSocket Character;
+	public Output Character;
 
 	public override Instance Create()
 	{

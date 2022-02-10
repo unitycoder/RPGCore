@@ -5,9 +5,9 @@ namespace RPGCore.Demo.Inventory.Nodes;
 
 public sealed class GetStatNode : NodeTemplate<GetStatNode>
 {
-	public InputSocket Character;
+	public Input Character;
 
-	public OutputSocket Output;
+	public Output Output;
 
 	public override Instance Create()
 	{

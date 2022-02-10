@@ -15,31 +15,53 @@ public readonly struct LocalId : IEquatable<LocalId>
 	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 	private static readonly Random random = new();
 
+	/// <summary>
+	/// A identifier representing a missing ID.
+	/// </summary>
 	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
-	public static readonly LocalId None = new(0);
+	public static LocalId None { get; } = new(0);
 
 	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 	private readonly ulong id;
 
-	public LocalId(string? id)
-	{
-		if (string.IsNullOrWhiteSpace(id))
-		{
-			this.id = 0;
-		}
-		else
-		{
-			if (id.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-			{
-				id = id.Substring(2);
-			}
-			this.id = ulong.Parse(id.ToString(), NumberStyles.HexNumber);
-		}
-	}
-
+	/// <summary>
+	/// Initialises a new instance of the <see cref="LocalId"/>.
+	/// </summary>
+	/// <param name="id">The raw value of the identifier.</param>
+	[JsonConstructor]
 	public LocalId(ulong id)
 	{
 		this.id = id;
+	}
+
+	/// <summary>
+	/// Tries to convert the string represention of the identifier to a <see cref="LocalId"/>. A return value indicates whether the conversion succeeded of failed.
+	/// </summary>
+	/// <param name="source">A span that represents the identifer to convert.</param>
+	/// <param name="value">When this method returns <c>true</c>, contains the <see cref="LocalId"/> that is equivilant to the one specified in <paramref name="source"/>; otherwise contains <see cref="None"/>.</param>
+	/// <returns><c>true</c> if <paramref name="source"/> was converted successfully; otherwise, <c>false</c>.</returns>
+	public static bool TryParse(ReadOnlySpan<char> source, out LocalId value)
+	{
+		if (source.IsEmpty || source.IsWhiteSpace())
+		{
+			value = None;
+			return true;
+		}
+
+		if (source.StartsWith("0x".AsSpan(), StringComparison.OrdinalIgnoreCase))
+		{
+			source = source.Slice(2);
+		}
+		if (ulong.TryParse(source.ToString(), NumberStyles.HexNumber, null, out var result))
+		{
+			value =	new LocalId(result);
+			return true;
+		}
+		else
+		{
+			value = None;
+			return false;
+		}
 	}
 
 	/// <inheritdoc/>
@@ -48,10 +70,12 @@ public readonly struct LocalId : IEquatable<LocalId>
 		return obj is LocalId id && Equals(id);
 	}
 
+	/// <inheritdoc/>
 	public bool Equals(LocalId other)
 	{
 		return id == other.id;
 	}
+
 	/// <inheritdoc/>
 
 	public override int GetHashCode()
@@ -112,7 +136,14 @@ public sealed class LocalIdJsonConverter : JsonConverter
 
 	public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 	{
-		return new LocalId(reader.Value?.ToString());
+		if (LocalId.TryParse((reader.Value?.ToString() ?? "").AsSpan(), out var result))
+		{
+			return result;
+		}
+		else
+		{
+			return LocalId.None;
+		}
 	}
 }
 
@@ -127,9 +158,14 @@ internal sealed class LocalIdConverter : TypeConverter
 	{
 		string? stringValue = value as string;
 
-		return !string.IsNullOrEmpty(stringValue)
-			? new LocalId(stringValue)
-			: base.ConvertFrom(context, culture, value);
+		if (LocalId.TryParse(stringValue.AsSpan(), out var result))
+		{
+			return result;
+		}
+		else
+		{
+			return LocalId.None;
+		}
 	}
 
 	public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)

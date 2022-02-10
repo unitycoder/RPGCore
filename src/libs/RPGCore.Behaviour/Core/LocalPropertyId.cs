@@ -13,8 +13,8 @@ public readonly struct LocalPropertyId : IEquatable<LocalPropertyId>
 	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 	public static readonly LocalPropertyId None = new(LocalId.None, Array.Empty<string>());
 
-	public readonly LocalId TargetIdentifier;
-	public readonly string[] PropertyPath;
+	public LocalId TargetIdentifier { get; }
+	public string[] PropertyPath { get; }
 
 	public LocalPropertyId(string? expression)
 	{
@@ -27,7 +27,9 @@ public readonly struct LocalPropertyId : IEquatable<LocalPropertyId>
 
 		string[] elements = expression.Split('.');
 
-		TargetIdentifier = new LocalId(elements[0]);
+		LocalId.TryParse(elements[0].AsSpan(), out var targetIdentifier);
+		TargetIdentifier = targetIdentifier;
+
 		PropertyPath = new string[elements.Length - 1];
 		for (int i = 0; i < elements.Length - 1; i++)
 		{
@@ -47,17 +49,20 @@ public readonly struct LocalPropertyId : IEquatable<LocalPropertyId>
 		PropertyPath = propertyPath;
 	}
 
+	/// <inheritdoc/>
 	public override bool Equals(object obj)
 	{
 		return obj is LocalPropertyId id && Equals(id);
 	}
 
+	/// <inheritdoc/>
 	public bool Equals(LocalPropertyId other)
 	{
 		return TargetIdentifier == other.TargetIdentifier
 			&& ArrayEquals(PropertyPath, other.PropertyPath);
 	}
 
+	/// <inheritdoc/>
 	public override int GetHashCode()
 	{
 		if (PropertyPath != null)

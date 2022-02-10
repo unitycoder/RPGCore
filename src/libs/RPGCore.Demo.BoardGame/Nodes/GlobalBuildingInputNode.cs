@@ -4,8 +4,8 @@ namespace RPGCore.Demo.BoardGame;
 
 public class GlobalBuildingInputNode : NodeTemplate<GlobalBuildingInputNode>
 {
-	public OutputSocket Players;
-	public OutputSocket Building;
+	public Output Players;
+	public Output Building;
 
 	public override Instance Create()
 	{

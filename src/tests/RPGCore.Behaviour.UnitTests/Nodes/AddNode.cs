@@ -1,13 +1,10 @@
-﻿using RPGCore.Behaviour;
-
-namespace RPGCore.Documentation.Samples.RPGCore.Behaviour.AddNodeSample;
+﻿namespace RPGCore.Behaviour;
 
 public class AddNode : Node
 {
-	public Input<float> ValueA;
-	public Input<float> ValueB;
-
-	public Output<float> Output;
+	public Input<float> ValueA { get; set; }
+	public Input<float> ValueB { get; set; }
+	public Output<float> Output { get; set; }
 
 	public override void OnInputChanged(GraphInstance graphInstance)
 	{

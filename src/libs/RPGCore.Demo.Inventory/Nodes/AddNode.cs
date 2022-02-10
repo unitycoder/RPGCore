@@ -4,10 +4,10 @@ namespace RPGCore.Demo.Inventory.Nodes;
 
 public sealed class AddNode : NodeTemplate<AddNode>
 {
-	public InputSocket ValueA;
-	public InputSocket ValueB;
+	public Input ValueA;
+	public Input ValueB;
 
-	public OutputSocket Output;
+	public Output Output;
 
 	public override Instance Create()
 	{

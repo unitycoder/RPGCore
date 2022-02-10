@@ -4,8 +4,8 @@ namespace RPGCore.Demo.BoardGame;
 
 public class GetNeighboursNode : NodeTemplate<GetNeighboursNode>
 {
-	public InputSocket Building;
-	public OutputSocket Neighbours;
+	public Input Building;
+	public Output Neighbours;
 	public bool IncludeDiagonal;
 
 	public override Instance Create()

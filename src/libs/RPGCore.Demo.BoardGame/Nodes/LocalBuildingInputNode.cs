@@ -4,8 +4,8 @@ namespace RPGCore.Demo.BoardGame;
 
 public class LocalBuildingInputNode : NodeTemplate<LocalBuildingInputNode>
 {
-	public OutputSocket Owner;
-	public OutputSocket Building;
+	public Output Owner;
+	public Output Building;
 
 	public override Instance Create()
 	{
