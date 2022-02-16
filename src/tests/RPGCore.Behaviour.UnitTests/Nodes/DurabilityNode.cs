@@ -10,14 +10,14 @@ public class DurabilityNode : Node
 	public Input<float> Input { get; set; }
 	public Output<float> Output { get; set; }
 
-	public override void OnInputChanged(GraphInstance graphInstance)
+	public override void OnInputChanged(GraphInstanceNode node)
 	{
-		graphInstance.UseInput(Input, out var input);
-		graphInstance.UseOutput(Output, out var output);
+		node.UseInput(Input, out var input);
+		node.UseOutput(Output, out var output);
 
 		output.Value += input.Value;
 
-		ref var data = ref graphInstance.GetNodeInstanceData<DurabilityNodeData>(this);
+		ref var data = ref node.GetNodeInstanceData<DurabilityNodeData>(this);
 
 		data.MaxDurability += 1;
 	}

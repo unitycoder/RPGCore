@@ -2,7 +2,7 @@
 
 public struct InputInstance<TType>
 {
-	internal GraphInstance graphInstance;
+	internal GraphInstanceData graphInstance;
 	internal Input<TType> input;
 
 	public TType Value { get; set; }

@@ -18,7 +18,7 @@ public sealed class IterateNode : NodeTemplate<IterateNode>
 	{
 		public Input<float> Repetitions;
 
-		public List<GraphInstance> SubGraphs;
+		public List<GraphInstanceData> SubGraphs;
 
 		public override InputMap[] Inputs(ConnectionMapper graph) => new[]
 		{
@@ -31,7 +31,7 @@ public sealed class IterateNode : NodeTemplate<IterateNode>
 		{
 			if (SubGraphs == null)
 			{
-				SubGraphs = new List<GraphInstance>();
+				SubGraphs = new List<GraphInstanceData>();
 			}
 		}
 
@@ -46,7 +46,7 @@ public sealed class IterateNode : NodeTemplate<IterateNode>
 
 			for (int i = 0; i < repetitions; i++)
 			{
-				GraphInstance subgraphInstance;
+				GraphInstanceData subgraphInstance;
 				if (SubGraphs.Count > i)
 				{
 					subgraphInstance = SubGraphs[i];

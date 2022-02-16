@@ -1,16 +1,20 @@
-﻿namespace RPGCore.Behaviour;
+﻿using System.Collections.Generic;
+
+namespace RPGCore.Behaviour;
 
 public class Graph
 {
-	public Node[] Nodes { get; }
+	private readonly Node[] nodes;
+
+	public IReadOnlyList<Node> Nodes => nodes;
 
 	public Graph(Node[] nodes)
 	{
-		Nodes = nodes;
+		this.nodes = nodes;
 	}
 
-	public GraphInstance CreateInstance()
+	public GraphInstanceData CreateInstanceData()
 	{
-		return new GraphInstance();
+		return new GraphInstanceData();
 	}
 }

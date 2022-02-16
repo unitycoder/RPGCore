@@ -1,29 +1,49 @@
-﻿using System.Collections.Generic;
+﻿namespace RPGCore.Behaviour;
 
-namespace RPGCore.Behaviour;
-
-public class GraphInstance
+public struct GraphInstance
 {
-	public Graph Graph { get; set; }
+	public GraphRuntime Runtime { get; }
+	public Graph Graph { get; }
+	public GraphInstanceData Data { get; }
 
-	public Dictionary<string, INodeData> Nodes { get; set; } = new();
-
-	public Dictionary<string, IOutputData> Outputs { get; set; } = new();
-
-	public void UseInput<TType>(Input<TType>? inputSocket, out InputInstance<TType> socket)
+	public GraphInstance(
+		GraphRuntime runtime,
+		Graph graph,
+		GraphInstanceData data)
 	{
-		socket = default;
+		Runtime = runtime;
+		Graph = graph;
+		Data = data;
 	}
-	public void UseOutput<TType>(Output<TType>? outputSocket, out OutputInstance<TType> socket)
+
+	public void Enable()
 	{
-		socket = default;
+		for (int i = 0; i < Graph.Nodes.Count; i++)
+		{
+			var node = Graph.Nodes[i];
+			node.OnEnable(new GraphInstanceNode(this, node.Id));
+		}
 	}
 
-	public ref T GetNodeInstanceData<T>(Node node)
-		where T : struct, INodeData
+	public void Disable()
 	{
-		var array = new T[1];
+		for (int i = 0; i < Graph.Nodes.Count; i++)
+		{
+			var node = Graph.Nodes[i];
+			node.OnDisable(new GraphInstanceNode(this, node.Id));
+		}
+	}
 
-		return ref array[0];
+	public GraphInstanceNode<TNode> GetNode<TNode>()
+		where TNode : Node
+	{
+		foreach (var node in Graph.Nodes)
+		{
+			if (node is TNode typedNode)
+			{
+				return new GraphInstanceNode<TNode>(this, node.Id, typedNode);
+			}
+		}
+		return new GraphInstanceNode<TNode>(this, typedNode);
 	}
 }

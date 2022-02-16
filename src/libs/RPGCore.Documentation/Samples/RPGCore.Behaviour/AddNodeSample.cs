@@ -9,7 +9,7 @@ public class AddNode : Node
 
 	public Output<float> Output;
 
-	public override void OnInputChanged(GraphInstance graphInstance)
+	public override void OnInputChanged(GraphInstanceData graphInstance)
 	{
 		graphInstance.UseInput(ValueA, out var valueA);
 		graphInstance.UseInput(ValueB, out var valueB);

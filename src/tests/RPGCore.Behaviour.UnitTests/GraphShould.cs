@@ -20,17 +20,21 @@ public class GraphShould
 
 		var graph = new Graph(new Node[]
 		{
-			new AddNode() {
+			new AddNode()
+			{
 				Id = LocalId.NewShortId()
 			},
-			new IterateNode() {
+			new IterateNode()
+			{
 				Id = LocalId.NewShortId(),
 				Graph = new Graph(new Node[]
 				{
-					new AddNode() {
+					new AddNode()
+					{
 						Id = LocalId.NewShortId()
 					},
-					new AddNode() {
+					new AddNode()
+					{
 						Id = LocalId.NewShortId()
 					}
 				})

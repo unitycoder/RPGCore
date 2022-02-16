@@ -10,6 +10,5 @@ public sealed class Output<TType>
 		public TType Value { get; set; }
 	}
 
-
 	internal int lookupIndex = -1;
 }

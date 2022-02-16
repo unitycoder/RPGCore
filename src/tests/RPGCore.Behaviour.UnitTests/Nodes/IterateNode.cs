@@ -7,29 +7,29 @@ public class IterateNode : Node
 {
 	public struct IterateNodeData : INodeData
 	{
-		public List<GraphInstance> Instances { get; set; }
+		public List<GraphInstanceData> Instances { get; set; }
 	}
 
 	public Input<int> Iterations { get; set; }
 	public Graph Graph { get; set; } = new Graph(Array.Empty<Node>());
 
-	public override void OnCreateInstance(GraphInstance graphInstance)
+	public override void OnEnable(GraphInstanceNode node)
 	{
-		UpdateIterations(graphInstance);
+		UpdateIterations(node);
 	}
 
-	public override void OnInputChanged(GraphInstance graphInstance)
+	public override void OnInputChanged(GraphInstanceNode node)
 	{
-		UpdateIterations(graphInstance);
+		UpdateIterations(node);
 	}
 
-	private void UpdateIterations(GraphInstance graphInstance)
+	private void UpdateIterations(GraphInstanceNode node)
 	{
-		graphInstance.UseInput(Iterations, out var iterations);
+		node.UseInput(Iterations, out var iterations);
 
 		if (iterations.HasChanged)
 		{
-			// ref var data = ref graphInstance.GetNodeInstanceData<IterateNodeData>(this);
+			// ref var data = ref node.GetNodeInstanceData<IterateNodeData>(this);
 			// 
 			// // Remove unused instances
 			// while (data.Instances.Count > iterations.Value)
